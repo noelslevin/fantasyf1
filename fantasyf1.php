@@ -58,11 +58,7 @@ function fantasy_admin() {
 	include 'fantasy_admin.php';
 	}
 
-function fantasyf1_globaloptions() {
-	// Needs to be able to pull active race ID.
-
-	// Need to add a new column in races to control whether picks are active or not. This file then needs to activate on this criteria.
-	
+function fantasyf1_globaloptions() {	
 	include 'fantasy_global_options.php';
 	}
 

@@ -4,6 +4,8 @@
 
 <?php
 
+$year = date("Y");
+
 $message = NULL;
 if (isset($_POST['createfantasyteam'])) {
 	include 'create_fantasy_team.php';
@@ -15,6 +17,9 @@ if (isset($_POST['fantasyuserstoseasons'])) {
 if (isset($_POST['fantasyteamstoseasons'])) {
 	include 'fantasy_teams_to_seasons.php';
 }
+if (isset($_POST['fantasyusersupdate'])) {
+	include 'reregister_fantasy_users.php';
+}
 
 ?>
 
@@ -22,7 +27,7 @@ if (isset($_POST['fantasyteamstoseasons'])) {
 
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>?page=fantasyf1_fantasy_data" method="post">
 
-<label for="teamname">Team Name: </label><input type="text" name="teamname" value="" />
+<label for="teamname">Team Name: </label><input type="text" name="teamname" id="teamname" value="" />
 
 <input type="submit" name="createfantasyteam" value="Create Fantasy Team" />
 </form>
@@ -33,8 +38,8 @@ if (isset($_POST['fantasyteamstoseasons'])) {
 
 echo "<form action =\"".$_SERVER['PHP_SELF']."?page=fantasyf1_fantasy_data\" method=\"post\">\n\n";
 
-// Select all drivers from the database
-$query = "SELECT fantasyusers.id, fantasyusers.username FROM fantasyusers ORDER BY fantasyusers.username ASC";
+// Select all fantasy users from the database – only displays those marked as registered
+$query = "SELECT fantasyusers.id, fantasyusers.username FROM fantasyusers WHERE registered = 1 ORDER BY fantasyusers.username ASC";
 $result = mysql_query ($query);
 if (mysql_num_rows ($result) > 0) {
 	echo "<select name = \"fantasy_user_id\">\n";
@@ -48,8 +53,8 @@ if (mysql_num_rows ($result) > 0) {
 else {
 	$message .= "<p>No fantasy users found.</p>\n";
 }
-// Select all fantasy teams from the database
-$query = "SELECT fantasyteamstoseasons.id, fantasyteamstoseasons.teamname, fantasyteamstoseasons.season FROM fantasyteamstoseasons ORDER BY fantasyteamstoseasons.season DESC, fantasyteamstoseasons.teamname ASC";
+// Select all fantasy teams from the database – only displays teams from the current year
+$query = "SELECT fantasyteamstoseasons.id, fantasyteamstoseasons.teamname, fantasyteamstoseasons.season FROM fantasyteamstoseasons WHERE fantasyteamstoseasons.season = '$year' ORDER BY fantasyteamstoseasons.season DESC, fantasyteamstoseasons.teamname ASC";
 $result = mysql_query ($query);
 if (mysql_num_rows ($result) > 0) {
 	echo "<select name = \"fantasyteam_id\">\n";
@@ -90,15 +95,34 @@ else {
 
 ?>
 
-<label for="year">Year: </label><input type="text" name="year" value="" />
-<label for="fantasy_team_name">Team Name: </label><input type="text" name="fantasy_team_name" value="" />
+<label for="year">Year: </label><input type="text" name="year" id="year" value="" />
+<label for="fantasy_team_name">Team Name: </label><input type="text" name="fantasy_team_name" id="fantasy_team_name" value="" />
 
 <?php
 
 echo "<input type=\"submit\" value=\"Create Association\" name=\"fantasyteamstoseasons\" />\n\n";
 echo "</form>\n\n";
 
+echo "<h2>Re-Register Fantasy Users For Current Season</h2>";
+echo "<form action =\"".$_SERVER['PHP_SELF']."?page=fantasyf1_fantasy_data\" method=\"post\">\n\n";
+$query = "SELECT fantasyusers.id, fantasyusers.username FROM fantasyusers WHERE registered = 0";
+$result = mysql_query($query);
+$num = mysql_num_rows($result);
+if ($num > 0) {
+	echo "<select name = \"user_id\">\n";
+	while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+		$id = $row['id'];
+		$name = $row['username'];
+		echo "<option value=\"".$id."\">".$name."</option>\n";
+	}
+	echo "</select>\n\n";
+}
 
+else {
+	echo "<p>No unregistered users found.<p>";
+}
+echo "<input type=\"submit\" value=\"Update User\" name=\"fantasyusersupdate\" />\n\n";
+echo "</form>\n\n";
 
 echo $message;
 
