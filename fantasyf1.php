@@ -1,12 +1,12 @@
 <?php
 
 /*
-Plugin Name: Fantasy F1
-Plugin URI: http://www.noelinho.org
+Plugin Name: FantasyF1
+Plugin URI: http://noelinho.org
 Description: Noelinho's plugin for WordPress for self-hosting GridBids.
-Version: 0.1
+Version: 1.0
 Author: Noelinho
-Author URI: http://www.noelinho.org
+Author URI: http://noelinho.org
 License: None. No permission granted for use outside of Noelinho.org
 */
 
@@ -14,7 +14,7 @@ add_action('admin_menu', 'fantasyf1_menu');
 add_action('admin_menu', 'fantasyf1_admin');
 
 function fantasyf1_menu() {
-	add_menu_page('Fantasy F1', 'Fantasy F1', 'read', 'fantasyf1', 'fantasyf1'); // This is a general info page
+	add_menu_page('FantasyF1', 'FantasyF1', 'read', 'fantasyf1', 'fantasyf1'); // This is a general info page
 	add_submenu_page('fantasyf1', 'Make Your Picks', 'Make Your Picks', 'read', 'fantasyf1_picks', 'fantasyf1_picks'); // For making picks
 /*	add_submenu_page('fantasyf1', 'Fantasy F1 Profile', 'Fantasy F1 Profile', 'read', 'fantasyf1_profile', 'fantasyf1_profile'); // Profile options
 	add_submenu_page('fantasyf1', 'Results', 'Results', 'read', 'fantasyf1_results', 'fantasyf1_results'); // Latest results*/
