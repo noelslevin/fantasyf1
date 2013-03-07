@@ -1,4 +1,4 @@
-<h2>The Noelinho.org Fantasy F1 Championship</h2>
+<h2>The Noelinho.org FantasyF1 Championship</h2>
 
 <?php
 
@@ -60,7 +60,7 @@
 	<li>If two or more players are tied on points, a tie break situation ensues.</li>
 	<li>The tied players will be split according to their picks.</li>
 	<li>If one player has selected the race winner, and the other hasn't, they win the tie break.</li>
-	<li>If the tied drivers have both players have picked (or both have not picked) the winning driver, the same process is used for the second-placed driver.</li>
+	<li>If the tied drivers have both picked (or both have not picked) the winning driver, the same process is used for the second-placed driver.</li>
 	<li>This continues until the tie break is broken.</li>
 	<li>If the tie break is not broken because picks are identical, whoever picked first wins the tie break.</li>
 	<li>If a driver does not start the race, according to the official classification, all picks for that driver are void and cannot be used in the tie break procedure.</li>

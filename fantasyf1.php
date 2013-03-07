@@ -3,7 +3,7 @@
 /*
 Plugin Name: FantasyF1
 Plugin URI: http://noelinho.org
-Description: Noelinho's plugin for WordPress for self-hosting GridBids.
+Description: Noelinho's plugin for WordPress for self-hosting Grid Bids.
 Version: 1.0
 Author: Noelinho
 Author URI: http://noelinho.org
@@ -22,11 +22,11 @@ function fantasyf1_menu() {
 
 function fantasyf1_admin() {
 	add_menu_page('Fantasy Admin', 'Fantasy Admin', 'administrator', 'fantasy_admin', 'fantasy_admin');
-	add_submenu_page('fantasy_admin', 'Submit Results', 'Submit Results', 'administrator', 'fantasyf1_submitresults', 'fantasyf1_submitresults');
 	add_submenu_page('fantasy_admin', 'Global Options', 'Global Options', 'administrator', 'fantasyf1_globaloptions', 'fantasyf1_globaloptions');
 	add_submenu_page('fantasy_admin', 'Raw Data', 'Raw Data', 'administrator', 'fantasyf1_f1data', 'fantasyf1_f1data');
 	add_submenu_page('fantasy_admin', 'Race Entries', 'Race Entries', 'administrator', 'fantasyf1_race_entries', 'fantasyf1_race_entries');
 	add_submenu_page('fantasy_admin', 'Driver Values', 'Driver Values', 'administrator', 'fantasyf1_driver_values', 'fantasyf1_driver_values');
+	add_submenu_page('fantasy_admin', 'Submit Results', 'Submit Results', 'administrator', 'fantasyf1_submitresults', 'fantasyf1_submitresults');
 	add_submenu_page('fantasy_admin', 'Fantasy Data', 'Fantasy Data', 'administrator', 'fantasyf1_fantasy_data', 'fantasyf1_fantasy_data');
 	add_submenu_page('fantasy_admin', 'Fantasy Results', 'Fantasy Results', 'administrator'
 , 'fantasyf1_fantasy_results', 'fantasyf1_fantasy_results');

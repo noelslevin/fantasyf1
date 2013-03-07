@@ -8,12 +8,16 @@ $message = NULL;
 // This runs if any data has been submitted
 if (isset($_POST['createrace'])) {
 	$raceid = $_POST['race_id'];
-	$gpdate = $_POST['gpdate'];
+	$gpdate = $_POST['gpdate']; // Race date
+	date_default_timezone_set('GMT'); // Ensure EPOCH time is working from GMT
+	$deadline = strtotime($gpdate); // EPOCH time of race date
+	$deadline = $deadline - 172800; // Subtract two days for Friday date (picks deadline)
+	
 	$query = "SELECT * FROM races WHERE race_date = '$gpdate'";
 	$result = mysql_query ($query);
 	// If record does not already exist
 	if (mysql_num_rows($result) == 0) {
-		$query = "INSERT INTO races (trackstograndsprix_id, race_date) VALUES ('$raceid', '$gpdate')";
+		$query = "INSERT INTO races (trackstograndsprix_id, race_date, picksdeadline) VALUES ('$raceid', '$gpdate', '$deadline')";
 		$result = mysql_query ($query);
 		if (mysql_affected_rows() > 0) {
 			$message .= "<p>The record was successfully added into the database.</p>";

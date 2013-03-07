@@ -16,7 +16,6 @@ if (isset($_POST['submitresult'])) {
 	include 'submit_results/process_results.php';
 }
 
-
 echo "<h2>Select A Race</h2>";
 // This is the dropdown menu to select a race
 echo "<form action =\"".$_SERVER['PHP_SELF']."?page=fantasyf1_submitresults\" method=\"post\">\n\n";

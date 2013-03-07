@@ -1,8 +1,6 @@
 <h2>Drivers To Seasons</h2>
 <p>Use this to assign drivers to teams in the database</p>
 
-<p><strong>This needs updating to reflect the change in the way teams data is stored.</strong></p>
-
 <?php
 
 // Set output message to NULL

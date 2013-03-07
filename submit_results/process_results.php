@@ -1,10 +1,13 @@
 <?php
 
-$driverid = $_POST['driver'];
-$position = $_POST['position'];
+$num = 0;
 $raceid = $_POST['races_id'];
 
-switch ($position) {
+for ($x = 1; $x < 23; $x++) {
+
+$driverid = $_POST[$x];
+
+switch ($x) {
 	case 1:
 	$points = 25;
 	break;
@@ -39,19 +42,21 @@ default:
 	$points = 0;
 }
 
-$query = "UPDATE raceentries SET race_position = '$position', race_points = '$points' WHERE id = '$driverid'";
+$query = "UPDATE raceentries SET race_position = '$x', race_points = '$points' WHERE id = '$driverid'";
 $result = mysql_query($query);
 $affected = mysql_affected_rows();
 if ($affected == 0) {
-	echo "<Nothing updated.</p>";
+	echo "Error: Entry ID ".$driverid."not updated.</p>";
 }
 else if ($affected == 1) {
-	echo "<p>Record updated.</p>";
+	$num++;
 }
 else {
-	echo "<p>Error. More than one record updated.<p>";
+	echo "<p>Error. More than one record updated.</p>";
 }
 
-include 'jquery_submit.php';
+}
+
+echo "<p>".$num." records successfully updated.</p>";
 
 ?>
