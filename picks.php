@@ -46,13 +46,13 @@ function UpdateCost() {
 	$current_user = wp_get_current_user(); // Get WordPress id
 	$userid = $current_user->ID;
 	// Need to query fantasyuserstoseasons id from wordpress_id
-	$userquery = "SELECT fantasyuserstoseasons.id, fantasyusers.username, fantasyteamstoseasons.season, fantasyteams.fantasyteam_name FROM fantasyuserstoseasons, fantasyusers, fantasyteamstoseasons, fantasyteams WHERE fantasyteamstoseasons.fantasyteams_id = fantasyteams.id AND fantasyuserstoseasons.fantasyusers_id = fantasyusers.id AND fantasyuserstoseasons.fantasyteamstoseasons_id = fantasyteamstoseasons.id AND season = '".$currentyear."' AND fantasyusers.wordpress_id = '".$userid."'"; // Get fantasyusers id from related WordPress id
+	$userquery = "SELECT fantasyuserstoseasons.id, fantasyusers.username, fantasyteamstoseasons.season, fantasyteamstoseasons.teamname FROM fantasyuserstoseasons, fantasyusers, fantasyteamstoseasons, fantasyteams WHERE fantasyteamstoseasons.fantasyteams_id = fantasyteams.id AND fantasyuserstoseasons.fantasyusers_id = fantasyusers.id AND fantasyuserstoseasons.fantasyteamstoseasons_id = fantasyteamstoseasons.id AND season = '".$currentyear."' AND fantasyusers.wordpress_id = '".$userid."'"; // Get fantasyusers id from related WordPress id
 	$userresult = mysql_query($userquery);
 	if (mysql_num_rows ($userresult) == 1) {
 		while ($row = mysql_fetch_array ($userresult, MYSQL_ASSOC)) {
 			$fantasyuserstoseasonsid = $row['id'];
 			$username = $row['username'];
-					$fantasyteam = $row['fantasyteam_name'];
+					$fantasyteam = $row['teamname'];
 					?>
 					<p>Your registration details for this season:</p>
 					<table>
