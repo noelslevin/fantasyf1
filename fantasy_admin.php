@@ -13,6 +13,9 @@ if (mysql_num_rows ($result) == 1) {
 		
 	}
 }
+else {
+	$deadline = NULL;
+}
 
 echo "<h1>Who's Picked?</h1>";
 
@@ -31,6 +34,8 @@ else {
 	echo "<p>Either no-one has picked, or there is no active race.</p>";
 }
 
-include 'picks_reminders.php';
+if ($deadline != NULL) {
+	include 'picks_reminders.php';
+}
 
 ?>
