@@ -168,16 +168,17 @@ $result = mysql_query($query);
 if (mysql_num_rows ($result) > 0) {
 	echo "<form action=\"".$_SERVER['PHP_SELF']."?page=fantasyf1_picks\" method=\"post\">\n";
 	echo "<h1>Make Your Picks</h1>";
-	echo "<table><thead><th>Name</th><th>Cost</th><th>Pick</th></thead>\n";
+	echo "<table><thead><th>Name</th><th>Team</th><th>Cost</th><th>Pick</th></thead>\n";
 	$number = 0;
 	while ($row = mysql_fetch_array( $result, MYSQL_ASSOC)) {
 		$name = $row['forename']. " ".$row['surname'];
+		$team = $row['team_name'];
 		$fantasyvalue = $row['fantasy_value'];
 		$raceentryid = $row['raceentryid'];
 		$id = $row['id'];
 		$raceid = $row['races_id'];
 		$number++;
-		echo "<tr><td>".$name."</td><td>".$fantasyvalue."</td><td><input type=\"checkbox\" name=\"driverpicks[]\" id=\"pick".$number."\" onclick=\"UpdateCost()\" value=\"".$raceentryid."\" /></td></tr>\n";
+		echo "<tr><td>".$name."</td><td>".$team."</td><td>".$fantasyvalue."</td><td><input type=\"checkbox\" name=\"driverpicks[]\" id=\"pick".$number."\" onclick=\"UpdateCost()\" value=\"".$raceentryid."\" /></td></tr>\n";
 		echo "<input type=\"hidden\" id=\"driverpick".$number."\" value=\"".$fantasyvalue."\" />\n";
 		}
 	echo "</table>\n";
