@@ -52,7 +52,7 @@ if (isset($_POST['fantasy_race_points'])) {
 else if (isset($_POST['results_table'])) {
 // Query for producing a results table
 $raceid = $_POST['race_id'];
-$query = "SELECT fantasyusers.username, fantasyteams.fantasyteam_name, fantasyraceentries.fantasy_race_points, fantasyraceentries.fantasy_championship_points
+$query = "SELECT fantasyusers.username, fantasyteamstoseasons.teamname, fantasyraceentries.fantasy_race_points, fantasyraceentries.fantasy_championship_points
 FROM fantasyusers, fantasyraceentries, fantasyteams, fantasyuserstoseasons, fantasyteamstoseasons
 WHERE fantasyraceentries.fantasyuserstoseasons_id = fantasyuserstoseasons.id AND fantasyuserstoseasons.fantasyteamstoseasons_id = fantasyteamstoseasons.id AND fantasyuserstoseasons.fantasyusers_id = fantasyusers.id AND fantasyteamstoseasons.fantasyteams_id = fantasyteams.id AND fantasyraceentries.races_id = '$raceid'
 ORDER BY fantasyraceentries.fantasy_race_points DESC, fantasyraceentries.picksbinary DESC, fantasyraceentries.timepicked ASC";
@@ -63,7 +63,7 @@ if (mysql_num_rows($result) > 0) {
 	while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 		$num++;
 		$username = $row['username'];
-		$team = $row['fantasyteam_name'];
+		$team = $row['teamname'];
 		$points = $row['fantasy_race_points'];
 		$fantasyf1points = $row['fantasy_championship_points'];
 		echo "<tr><td>".$num."</td><td>".$username."</td><td>".$team."</td><td>".$points."</td><td>".$fantasyf1points."</td></tr>\n";
