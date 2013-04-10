@@ -197,7 +197,14 @@ else {
 
 // Select all non-complete Grands Prix
 echo "<h3>Calculate Fantasy Results</h3>";
-$query = "SELECT races.id, grandsprix.grand_prix_name, tracks.track_name, races.race_date FROM grandsprix, races, tracks, trackstograndsprix WHERE races.trackstograndsprix_id = trackstograndsprix.id AND trackstograndsprix.tracks_id = tracks.id AND trackstograndsprix.grandsprix_id = grandsprix.id AND races.drivers_entered = '1' AND races.complete = '0' ORDER BY races.race_date ASC";
+$query = "SELECT races.id, grandsprix.grand_prix_name, tracks.track_name, races.race_date 
+FROM tracks
+INNER JOIN grandsprix
+INNER JOIN trackstograndsprix ON (trackstograndsprix.tracks_id = tracks.id AND trackstograndsprix.grandsprix_id = grandsprix.id)
+INNER JOIN races ON (races.trackstograndsprix_id = trackstograndsprix.id)
+WHERE races.drivers_entered = '1' 
+AND races.complete = '0' 
+ORDER BY races.race_date ASC";
 $result = mysql_query ($query);
 if (mysql_num_rows ($result) > 0) {
 	echo "<form action=\"".$_SERVER['PHP_SELF']."?page=fantasyf1_fantasy_results\" method=\"post\">\n";

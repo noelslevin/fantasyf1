@@ -19,14 +19,24 @@ else {
 
 echo "<h1>Who's Picked?</h1>";
 
-$query = "SELECT fantasyusers.username, FROM_UNIXTIME(fantasypicks.timepicked) AS pick_time FROM fantasyusers, fantasypicks, races, fantasyuserstoseasons WHERE fantasypicks.fantasyuserstoseasons_id = fantasyuserstoseasons.id AND fantasypicks.races_id = races.id AND fantasyuserstoseasons.fantasyusers_id = fantasyusers.id AND races.is_active_race = 1 GROUP BY fantasyusers.username ORDER BY FROM_UNIXTIME(fantasypicks.timepicked) ASC";
+$query = "SELECT fantasyusers.username, fantasyteamstoseasons.teamname, FROM_UNIXTIME(fantasypicks.timepicked) AS pick_time 
+FROM fantasyusers
+INNER JOIN fantasyteams
+INNER JOIN fantasyteamstoseasons ON (fantasyteamstoseasons.fantasyteams_id = fantasyteams.id)
+INNER JOIN fantasyuserstoseasons ON (fantasyuserstoseasons.fantasyusers_id = fantasyusers.id AND fantasyuserstoseasons.fantasyteamstoseasons_id = fantasyteamstoseasons.id)
+INNER JOIN fantasypicks ON (fantasypicks.fantasyuserstoseasons_id = fantasyuserstoseasons.id)
+INNER JOIN races ON (races.id = fantasypicks.races_id)
+WHERE races.is_active_race = 1 
+GROUP BY fantasyusers.username 
+ORDER BY FROM_UNIXTIME(fantasypicks.timepicked) ASC";
 $result = mysql_query($query);
 if (mysql_num_rows($result) > 0) {
-	echo "<table><thead><tr><th>Username</th><th>Time Picked</th></tr></thead>\n<tbody>\n";
+	echo "<table><thead><tr><th>Username</th><th>Team</th><th>Time Picked</th></tr></thead>\n<tbody>\n";
 	while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 		$username = $row['username'];
+		$team = $row['teamname'];
 		$picktime = $row['pick_time'];
-		echo "<tr><td>".$username."</td><td>".$picktime."</td></tr>\n";
+		echo "<tr><td>".$username."</td><td>".$team."</td><td>".$picktime."</td></tr>\n";
 	}
 	echo "</tbody>\n</table>\n";
 }

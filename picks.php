@@ -28,7 +28,7 @@ function UpdateCost() {
     if (elem.checked == true) { sum += Number(elem2.value); }
   }
   document.getElementById('totalcost').value = sum.toFixed(1);
-  if (sum <= 45.0) {
+  if (sum < 45.01) {
   submitObj.disabled = false;
   }
   else {

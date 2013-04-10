@@ -11,7 +11,18 @@ if (isset($_POST['drivervalues'])) {
 	$raceid = $_POST['race_id'];
 
 	// Select all drivers from the race_id specified
-	$query = "SELECT raceentries.id, raceentries.driverstoseasons_id, drivers.forename, drivers.surname, teams.team_name, races.id AS races_id, teamstoseasons.base_price, races.race_date FROM races, trackstograndsprix, tracks, grandsprix, drivers, teams, raceentries, driverstoseasons, teamstoseasons WHERE raceentries.races_id = races.id AND raceentries.driverstoseasons_id = driverstoseasons.id AND races.trackstograndsprix_id = trackstograndsprix.id AND driverstoseasons.drivers_id = drivers.id AND driverstoseasons.teamstoseasons_id = teamstoseasons.id AND teamstoseasons.teams_id = teams.id AND trackstograndsprix.tracks_id = tracks.id AND trackstograndsprix.grandsprix_id = grandsprix.id AND races.id = '$raceid' ORDER BY teams.id ASC, drivers.id ASC";
+	$query = "SELECT raceentries.id, raceentries.driverstoseasons_id, drivers.forename, drivers.surname, teams.team_name, races.id AS races_id, teamstoseasons.base_price, races.race_date 
+	FROM drivers 
+	INNER JOIN teams 
+	INNER JOIN tracks 
+	INNER JOIN driverstoseasons ON (driverstoseasons.drivers_id = drivers.id) 
+	INNER JOIN trackstograndsprix ON (trackstograndsprix.tracks_id = tracks.id) 
+	INNER JOIN grandsprix ON (grandsprix.id = trackstograndsprix.grandsprix_id) 
+	INNER JOIN teamstoseasons ON (teamstoseasons.teams_id = teams.id AND teamstoseasons.id = driverstoseasons.teamstoseasons_id) 
+	INNER JOIN races ON (races.trackstograndsprix_id = trackstograndsprix.id) 
+	INNER JOIN raceentries ON (raceentries.races_id = races.id AND raceentries.driverstoseasons_id = driverstoseasons.id) 
+	WHERE races.id = '$raceid' 
+	ORDER BY teams.id ASC, drivers.id ASC";
 	$result = mysql_query ($query);
 	if (mysql_num_rows($result) > 0) {
 		echo "<table>\n";
@@ -53,7 +64,20 @@ if (isset($_POST['drivervalues'])) {
 			echo "<td>".$teamname[$arraynum]."</td>";
 			
 			// Find recent results - must be in the current season, with the current drivers, at their current team, and no more than 5
-			$pricequery = "SELECT raceentries.id AS raceentryid, raceentries.driverstoseasons_id, drivers.forename, drivers.surname, teams.team_name, races.id AS races_id, raceentries.race_points FROM races, trackstograndsprix, tracks, grandsprix, drivers, teams, raceentries, driverstoseasons, teamstoseasons WHERE raceentries.races_id = races.id AND raceentries.driverstoseasons_id = driverstoseasons.id AND races.trackstograndsprix_id = trackstograndsprix.id AND driverstoseasons.drivers_id = drivers.id AND driverstoseasons.teamstoseasons_id = teamstoseasons.id AND teamstoseasons.teams_id = teams.id AND trackstograndsprix.tracks_id = tracks.id AND trackstograndsprix.grandsprix_id = grandsprix.id AND driverstoseasons.id = '$driverid[$arraynum]' AND races.race_date < '$racedate[$arraynum]' ORDER BY races.race_date DESC LIMIT 5";
+			$pricequery = "SELECT raceentries.id AS raceentryid, raceentries.driverstoseasons_id, drivers.forename, drivers.surname, teams.team_name, races.id AS races_id, raceentries.race_points 
+			FROM drivers 
+			INNER JOIN teams
+			INNER JOIN tracks
+			INNER JOIN teamstoseasons ON (teamstoseasons.teams_id = teams.id)
+			INNER JOIN driverstoseasons ON(driverstoseasons.drivers_id = drivers.id AND driverstoseasons.teamstoseasons_id = teamstoseasons.id)
+			INNER JOIN trackstograndsprix ON (trackstograndsprix.tracks_id = tracks.id)
+			INNER JOIN grandsprix ON (grandsprix.id = trackstograndsprix.grandsprix_id)
+			INNER JOIN races ON (races.trackstograndsprix_id = trackstograndsprix.id)
+			INNER JOIN raceentries ON (raceentries.races_id = races.id AND raceentries.driverstoseasons_id = driverstoseasons.id)
+			WHERE driverstoseasons.id = '$driverid[$arraynum]' 
+			AND races.race_date < '$racedate[$arraynum]' 
+			ORDER BY races.race_date DESC 
+			LIMIT 5";
 			$priceresult = mysql_query($pricequery);
 			if (mysql_num_rows ($priceresult) > 0) {
 				while ($pricerow = mysql_fetch_array ($priceresult, MYSQL_ASSOC)) {
@@ -106,7 +130,13 @@ if (isset($_POST['drivervalues'])) {
 echo "<form action =\"".$_SERVER['PHP_SELF']."?page=fantasyf1_driver_values\" method=\"post\">\n\n";
 
 // Select all Grands Prix
-$query = "SELECT races.id, grandsprix.grand_prix_name, tracks.track_name, races.race_date FROM grandsprix, races, tracks, trackstograndsprix WHERE races.trackstograndsprix_id = trackstograndsprix.id AND trackstograndsprix.tracks_id = tracks.id AND trackstograndsprix.grandsprix_id = grandsprix.id AND races.drivers_entered = '1' AND races.complete = '0' ORDER BY races.race_date DESC";
+$query = "SELECT races.id, grandsprix.grand_prix_name, tracks.track_name, races.race_date 
+FROM tracks
+INNER JOIN trackstograndsprix ON (trackstograndsprix.tracks_id = tracks.id)
+INNER JOIN grandsprix ON (grandsprix.id = trackstograndsprix.grandsprix_id)
+INNER JOIN races ON (races.trackstograndsprix_id = trackstograndsprix.id)
+WHERE races.drivers_entered = '1' AND races.complete = '0' 
+ORDER BY races.race_date DESC";
 $result = mysql_query ($query);
 if (mysql_num_rows ($result) > 0) {
 	echo "<select name = \"race_id\">\n";
